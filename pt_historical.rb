@@ -245,7 +245,9 @@ class PtHistorical
 
     def initialize(config_file, job_description_file, accept=nil)
         #class variables.
-        @@base_url = "https://historical.gnip.com/accounts/"
+        # @@base_url = "https://historical.gnip.com/accounts/"
+        # http://gnip-api.gnip.com/historical/powertrack/accounts/{ACCOUNT_NAME}/publishers/twitter/jobs.json
+        @@base_url = "http://gnip-api.gnip.com/historical/powertrack/accounts/"
         @@output_folder = "./output"
 
         if accept.nil? #Client did not explicitly set 'accept' so set to false (reject).
@@ -379,10 +381,11 @@ class PtHistorical
     end
 
     def constructURL(account_name=nil)
+        #{ACCOUNT_NAME}/publishers/twitter/jobs.json
         if not account_name.nil? then
-            return @@base_url + account_name + "/jobs.json"
+            return @@base_url + account_name + "/publishers/twitter/jobs.json"
         else
-            return @@base_url + @account_name + "/jobs.json"
+            return @@base_url + @account_name + "/publishers/twitter/jobs.json"
         end
     end
 
