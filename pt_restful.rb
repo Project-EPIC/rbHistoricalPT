@@ -55,35 +55,6 @@ class PtRESTful
         end
     end
 
-    #Helper functions for building URLs
-
-    def getHistoricalURL(account_name=nil)
-        @url = "http://gnip-api.gnip.com/historical/powertrack/accounts/" #Root url for Historical PowerTrack API.
-
-        if account_name.nil? then #using object account_name attribute.
-            if @account_name.nil?
-                p "No account name set.  Can not set url."
-            else
-                @url = @url + @account_name + "/publishers/twitter/jobs.json"
-            end
-        else #account_name passed in, so use that...
-            @url = @url + account_name + "/publishers/twitter/jobs.json"
-        end
-    end
-
-    def getRehydrationURL(account_name=nil)
-        @url = "https://rehydration.gnip.com:443/accounts/"  #Root url for Rehydration PowerTrack.
-
-        if account_name.nil? then #using object account_name attribute.
-            if @account_name.nil?
-                p "No account name set.  Can not set url."
-            else
-                @url = @url + @account_name + "/publishers/twitter/rehydration/activities.json?ids="
-            end
-        else #account_name passed in, so use that...
-            @url = @url + account_name + "/publishers/twitter/rehydration/activities.json?ids="
-        end
-    end
 
     #Fundamental REST API methods
     def POST(data=nil)
