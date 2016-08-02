@@ -55,7 +55,6 @@ class PtRESTful
         end
     end
 
-
     #Fundamental REST API methods
     def POST(data=nil)
 
@@ -69,6 +68,23 @@ class PtRESTful
         request = Net::HTTP::Post.new(uri.path)
         request.body = @data
         request.basic_auth(@user_name, @password)
+        request.content_type="application/json"
+        
+        puts "here"
+
+        response = http.request(request)
+        return response
+    end
+
+    def GET_ACCCOUNT_USAGE
+
+        uri = URI('https://gnip-api.twitter.com/metrics/usage/accounts/CUResearch.json')
+
+        http = Net::HTTP.new(uri.host, uri.port)
+        http.use_ssl = true
+        request = Net::HTTP::Get.new(uri.request_uri)
+        request.basic_auth(@user_name, @password)
+
         response = http.request(request)
         return response
     end
@@ -97,7 +113,6 @@ class PtRESTful
         if not params.nil?
             uri.query = URI.encode_www_form(params)
         end
-
 
         http = Net::HTTP.new(uri.host, uri.port)
         http.use_ssl = true

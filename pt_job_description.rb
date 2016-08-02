@@ -50,7 +50,7 @@ class JobDescription
 
         #Add Rules to Job description.
         @rules = oRules.getHash
-        #p oJob.getJSON
+        
         getJSON
     end
 

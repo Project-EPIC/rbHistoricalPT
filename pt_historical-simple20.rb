@@ -1,3 +1,5 @@
+# Stripped down version of pt_historica.rb
+
 require "json"          #PowerTrack speaks json.
 require "yaml"          #Used for configuration, job and rules files.
 require "optparse"
@@ -64,21 +66,6 @@ class PtHistorical
 
     end
 
-    def getJobList
-        response = @http.GET  #Retrieve list of current jobs.
-        response.body  #Response body contains a JSON list of jobs.
-    end
-
-    def new?(jobList)
-        #p jobList
-        #p jobList.to_s
-        if jobList.include?(@job.title) then
-            false
-        else
-            true
-        end
-    end
-
     #Returns UUID assigned to this job.
     def getUUID(jobs, title = nil)
         # if no title passed in, set to object instance value.
@@ -108,6 +95,8 @@ class PtHistorical
         else
             return @@base_url + @account_name + "/publishers/twitter/jobs.json"
         end
+
+        #If you use the previous one... it works: 'https://historical.gnip.com/accounts/CUResearch/jobs.json'
     end
 
     def setResultsDetails(job)
@@ -128,9 +117,9 @@ class PtHistorical
         #Submit Job for estimation.
         data = @job.getJobDescription
         
-        puts "Hitting API with: #{@http.inspect}"
-        
         response = @http.POST(data)
+
+        p response
 
         #Read response and update status if successful...  Notify on problem.
         if response.code.to_i >= 200 and response.code.to_i < 300 then
@@ -301,6 +290,7 @@ if __FILE__ == $0  #This script code is executed when running this file.
         o.parse!
     end
 
+    #TODO: Handle this better....
     if $config.nil? then
         $config = "./PowerTrackConfig_private.yaml"  #Default
     end
@@ -311,6 +301,10 @@ if __FILE__ == $0  #This script code is executed when running this file.
 
     #Create a Historical PowerTrack object, passing in an account configuration file and a job description file.
     oHistPT = PtHistorical.new($config, $job, $accept)
+
+    p oHistPT.http.GET_ACCCOUNT_USAGE.body
+
+    # p oHistPT.http.GET.body
 
     #The "do all" method, utilizes many other methods to complete a job.
     # p oHistPT.manageJob
