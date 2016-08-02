@@ -263,12 +263,15 @@ class PtHistorical
         getSystemConfig(config_file)  #Load the oHistorical PowerTrack account details.
 
         @url = constructURL  #Spin up Historical URL.
+        puts "@url Variable is: #{@url}"
 
         #Set up a HTTP object.
         @http = PtRESTful.new  #Historical API is REST based (currently).
         @http.url = @url  #Pass the URL to the HTTP object.
         @http.user_name = @user_name  #Set the info needed for authentication.
         @http.password_encoded = @password_encoded  #HTTP class can decrypt password.
+
+        puts @http.inspect
 
         #Set up a Job object.
         @job = JobDescription.new  #Create a Job object.
@@ -560,6 +563,7 @@ class PtHistorical
 
         #Submit Job for estimation.
         data = @job.getJobDescription
+        puts "Hitting API with: #{@http.inspect}"
         response = @http.POST(data)
 
         #Read response and update status if successful...  Notify on problem.
@@ -995,6 +999,8 @@ if __FILE__ == $0  #This script code is executed when running this file.
 
     #Create a Historical PowerTrack object, passing in an account configuration file and a job description file.
     oHistPT = PtHistorical.new($config, $job, $accept)
+
+    puts "got here"
 
     #The "do all" method, utilizes many other methods to complete a job.
     p oHistPT.manageJob
